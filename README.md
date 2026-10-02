@@ -29,14 +29,3 @@ streamlit run app.py
 
 Después abrí http://localhost:8501 y subí un PDF con texto (no sirven los escaneos).
 
-## Limitaciones
-
-- Corta el texto por cantidad de caracteres, sin respetar párrafos.
-- Un solo PDF por sesión.
-- No tiene una evaluación formal de la calidad de las respuestas.
-
-## Próximos pasos
-
-- Migrar la base vectorial a Postgres con pgvector y Docker
-- Citar la página de origen de cada respuesta
-- Comparar un CV contra ofertas laborales
