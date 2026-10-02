@@ -1,16 +1,19 @@
-# Chatbot RAG sobre documentos
+# Preguntale a tu PDF
 
-Chatbot que responde preguntas sobre un PDF usando solo lo que dice el documento. Si la respuesta no está, lo dice en vez de inventar.
+Chatbot que responde preguntas sobre un PDF que subís desde el navegador, usando solo lo que dice el documento. Si la respuesta no está, lo dice en vez de inventar.
 
-## Cómo funciona
+## Cómo funciona (RAG)
 
-1. **Ingesta** (`ingest.py`): lee el PDF, lo parte en fragmentos y los convierte en embeddings con sentence-transformers. Los guarda en ChromaDB.
-2. **Consulta** (`app.py`): convierte la pregunta en un embedding, busca los 3 fragmentos más parecidos y se los pasa a Claude para que responda solo con ese contexto.
-3. **Interfaz**: chat web hecho con Streamlit, con un desplegable que muestra los fragmentos usados.
+1. **Subís un PDF** desde la barra lateral.
+2. **Indexado**: se extrae el texto, se corta en fragmentos de 800 caracteres con solapamiento y cada fragmento se convierte en un embedding con sentence-transformers. Se guardan en ChromaDB, en memoria y por sesión.
+3. **Consulta**: tu pregunta se convierte en embedding y se buscan los 3 fragmentos más cercanos.
+4. **Respuesta**: esos fragmentos se envían a Claude (Haiku 4.5), que responde solo con ese contexto. Cada respuesta muestra los fragmentos usados.
+
+El PDF no se guarda en disco: al cerrar la app, todo se borra.
 
 ## Tecnologías
 
-Python, ChromaDB, sentence-transformers, Claude API (Haiku 4.5), Streamlit.
+Python, Streamlit, ChromaDB, sentence-transformers, Claude API, pypdf.
 
 ## Cómo correrlo
 
@@ -21,17 +24,19 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 export ANTHROPIC_API_KEY="tu-clave"
-```
-
-Poné tu PDF en la carpeta con el nombre `documento.pdf` y corré:
-
-```bash
-python3 ingest.py
 streamlit run app.py
 ```
 
-## Posibles mejoras
+Después abrí http://localhost:8501 y subí un PDF con texto (no sirven los escaneos).
 
-- Subir varios PDFs desde la interfaz
-- Citar la página de donde sale cada respuesta
-- Comparar tu CV contra ofertas laborales
+## Limitaciones
+
+- Corta el texto por cantidad de caracteres, sin respetar párrafos.
+- Un solo PDF por sesión.
+- No tiene una evaluación formal de la calidad de las respuestas.
+
+## Próximos pasos
+
+- Migrar la base vectorial a Postgres con pgvector y Docker
+- Citar la página de origen de cada respuesta
+- Comparar un CV contra ofertas laborales
