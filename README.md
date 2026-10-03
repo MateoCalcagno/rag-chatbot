@@ -4,10 +4,10 @@ Chatbot que responde preguntas sobre un PDF que subís desde el navegador, usand
 
 ## Cómo funciona (RAG)
 
-1. **Subís un PDF** desde la barra lateral.
+1. **Subís un PDF** desde el navegador.
 2. **Indexado**: se extrae el texto, se corta en fragmentos de 800 caracteres con solapamiento y cada fragmento se convierte en un embedding con sentence-transformers. Se guardan en ChromaDB, en memoria y por sesión.
-3. **Consulta**: tu pregunta se convierte en embedding y se buscan los 3 fragmentos más cercanos.
-4. **Respuesta**: esos fragmentos se envían a Claude (Haiku 4.5), que responde solo con ese contexto. Cada respuesta muestra los fragmentos usados.
+3. **Consulta**: tu pregunta se convierte en embedding y se buscan los 5 fragmentos más cercanos.
+4. **Respuesta**: esos fragmentos se envían a Claude (Haiku 4.5), que responde solo con ese contexto. Cada respuesta muestra los fragmentos usados y la página del PDF de donde salió cada uno.
 
 El PDF no se guarda en disco: al cerrar la app, todo se borra.
 
